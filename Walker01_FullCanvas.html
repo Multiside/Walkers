@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Website Space Walker</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Prevent scrollbars */
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="walkerCanvas"></canvas>
+
+  <script>
+    // Get the canvas element and its 2d context
+    const canvas = document.getElementById('walkerCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size to match the window dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Walker object
+    const walker = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+    };
+
+    // Function to draw the walker
+    function drawWalker() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      ctx.fillStyle = '#000'; // Set fill color to black
+      ctx.fillRect(walker.x, walker.y, 5, 5); // Draw a small square representing the walker
+    }
+
+    // Function to update the walker's position
+    function updateWalker() {
+      const randomDirection = Math.floor(Math.random() * 4); // 0: up, 1: down, 2: left, 3: right
+
+      switch (randomDirection) {
+        case 0:
+          walker.y -= 5;
+          break;
+        case 1:
+          walker.y += 5;
+          break;
+        case 2:
+          walker.x -= 5;
+          break;
+        case 3:
+          walker.x += 5;
+          break;
+      }
+
+      // Ensure the walker stays within the canvas boundaries
+      walker.x = Math.min(canvas.width - 5, Math.max(0, walker.x));
+      walker.y = Math.min(canvas.height - 5, Math.max(0, walker.y));
+    }
+
+    // Function to handle window resize and adjust canvas size
+    function handleResize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Function to animate the walker
+    function animate() {
+      updateWalker();
+      drawWalker();
+      requestAnimationFrame(animate);
+    }
+
+    // Start the animation loop
+    animate();
+  </script>
+</body>
+</html>
